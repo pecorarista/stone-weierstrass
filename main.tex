@@ -1,0 +1,589 @@
+\documentclass{ltjsarticle}
+% \usepackage[%
+%     textwidth=40\zw,
+%     lines=40,
+%     centering
+% ]{geometry}
+\input{preamble}
+\usepackage[numbers]{natbib}
+
+\pgfplotsset{%
+    defaultplot/.style={%
+        width=\textwidth,
+        height=1.05\textwidth,
+        x=1cm,
+        y=1cm,
+        axis lines=middle,
+        axis line style=thick,
+        xlabel={},
+        ylabel={},
+        xtick=\empty,
+        ytick=\empty,
+        xmin=-0.25,
+        xmax=5,
+        ymin=-0.25,
+        ymax=4.5,
+        samples=200,
+        clip=false
+    }
+}
+
+\title{Stone--Weierstraßの定理}
+\author{宮澤 彬}
+\begin{document}
+
+\maketitle
+
+\nocite{miyajima-functional-analysis}
+
+\begin{thmbox}
+\begin{proposition}
+\(X\)をコンパクトHausdorff空間とし，
+\(X\)から\(\symbb{K}\)への連続関数全体の集合を\(C(X, \symbb{K})\)または単に\(C(X)\)と書く．
+\(C(X)\)における加法，スカラー倍をそれぞれ
+\begin{align*}
+    (f + g)(x) := f(x) + g(x), \quad
+    (\alpha f)(x) := \alpha f(x)
+\end{align*}
+で定義する．任意の\(x \in X\)について\(f \colon x \mapsto 0\)となる\(f\)は加法単位元（ゼロベクトル）であるから，これを\(0_{C(X)}\)または単に\(0\)と書く．
+これらによって\(C(X)\)は\(\symbb{K}\)上のベクトル空間となる．さらに乗法
+\begin{align*}
+    (fg)(x) := f(x)g(x)
+\end{align*}
+と定義する．このとき任意の\(x \in X\)について\(g \colon x \mapsto 1\)となる\(g\)は乗法単位元であるから，これを\(1_{C(X)}\)または単に\(1\)と書く．
+これらによって\(C(X)\)は\(\symbb{K}\)上の代数となる．
+\propositionlabel{compact-hausdorff-continuous-function}
+\end{proposition}
+\end{thmbox}
+
+\begin{proof} \(C(X)\)が加法，スカラー倍，乗法について閉じていることのみを示す．
+
+\paragraph{加法について閉じていること} 任意の\(f, g \in C(X)\)について，\(f + g \in C(X)\)を示す．\(f\)が連続なので，任意の\(x_0 \in X\)について，任意の\(\varepsilon > 0\)をとったとき，\(x_0\)の近傍\(V_1\)が存在して，\(x \in V_1\)ならば
+\begin{align*}
+    \lvert f(x) - f(x_0) \rvert < \frac{\varepsilon}{2}
+\end{align*}
+が成り立つ．\(g\)についても同様に，\(x_0\)の近傍\(V_2\)が存在して，\(x \in V_2\)ならば
+\begin{align*}
+    \lvert g(x) - g(x_0) \rvert < \frac{\varepsilon}{2}
+\end{align*}
+が成り立つ．よって\(x \in V_1 \cap V_2\)ならば
+\begin{align*}
+  \lvert (f + g)(x) - (f + g)(x_0) \rvert
+  &= \lvert f(x) + g(x) - (f(x_0) + g(x_0)) \rvert \\
+  &= \lvert f(x) - f(x_0) + g(x) - g(x_0) \rvert \\
+  &\leq \lvert f(x) - f(x_0) \rvert + \lvert g(x) - g(x_0) \rvert \\
+  &< \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon
+\end{align*}
+となり，\(f + g\)も\(x_0 \in X\)で連続である．したがって\(f + g \in C(X)\)である．
+
+\paragraph{スカラー倍について閉じていること} \(\alpha\)を任意の実数とする．任意の\(f \ \in C(X)\)について\(\alpha f \in C(X)\)となることを示す．\(f\)が任意の\(x_0 \in X\)で連続なので，任意の\(\varepsilon > 0\)に対して，\(x_0\)の近傍\(V\)が存在して，\(x \in V\)ならば
+\begin{align*}
+    \lvert f(x) - f(x_0) \rvert < \frac{\varepsilon}{\lvert \alpha \rvert + 1}
+\end{align*}
+が成り立つ．したがって
+\begin{align*}
+  \lvert (\alpha f)(x) - (\alpha f)(x_0) \rvert
+  = \lvert \alpha f(x) - \alpha f(x_0) \rvert
+  \leq \lvert \alpha \rvert \lvert f(x) - f(x_0) \rvert
+  < \lvert \alpha \rvert \frac{\varepsilon}{|\alpha| + 1}
+  \leq \varepsilon
+\end{align*}
+となり，\(\alpha f \in C(X)\)である．
+
+\paragraph{乗法について閉じていること} 任意の\(f, g \in X\)について\(fg \in C(X)\)を示す．任意の\(x_0 \in X\)をとる．\(f\)が\(x_0\)で連続なので，\(x_0\)の近傍\(V_1\)が存在して，\(x \in V_1\)ならば
+\begin{gather*}
+  \lvert f(x) \rvert - \lvert f(x_0) \rvert \leq \lvert f(x) - f(x_0) \rvert \leq 1
+\end{gather*}
+が成り立つ．同じく連続であることから，任意の\(\varepsilon > 0\)に対し，\(x_0\)の近傍\(V_2\)が存在して，\(x \in V_2\)ならば
+\begin{align*}
+  |f(x) - f(x_0)| < \frac{\varepsilon}{2(|g(x_0) + 1|)}
+\end{align*}
+が成り立つ．同様に\(g\)が連続なことから，\(x_0\)の近傍\(V_3\)が存在して，\(x \in V_3\)ならば
+\begin{align*}
+  |g(x) - g(x_0)| < \frac{\varepsilon}{2(|f(x_0)| + 1)}
+\end{align*}
+となる．したがって任意の\(x \in V_1 \cap V_2 \cap V_3\)について
+\begin{align*}
+  |(fg)(x) - (fg)(x_0)|
+  &= |f(x)g(x) - f(x_0)g(x_0)| \\
+  &= |f(x)g(x) - f(x)g(x_0) + f(x)g(x_0) - f(x_0)g(x_0)| \\
+  &= |f(x)(g(x) - g(x_0)) + (f(x) - f(x_0))g(x_0)| \\
+  &\leq |f(x)| |g(x) - g(x_0)| + |f(x) - f(x_0)| | g(x_0)| \\
+  &< (|f(x_0)| + 1) \frac{\varepsilon}{2(|f(x_0)| + 1)} + \frac{\varepsilon}{2(|g(x_0)| + 1)} |g(x_0)| \\
+  &\leq \frac{\varepsilon}{2} + \frac{\varepsilon}{2} = \varepsilon
+\end{align*}
+が成り立つ．よって\(fg \in C(X)\)である．
+\end{proof}
+
+代数のノルムは以下のように定義される．
+
+\begin{thmbox}
+\begin{definition}[（代数のノルム，ノルム付き代数，Banach{\protect\footnotemark}代数）]
+代数\(A\)上の写像\(\lVert\placeholder\rVert\)が，ベクトル空間\(A\)のノルムであり，さらに以下の\ref{banach-algebra-submultiplicativity}, \ref{banach-algebra-norm-1}を満たすとき，\(\lVert\placeholder\rVert\)を代数\(A\)のノルムという．
+\begin{conditions}
+    \item\label{banach-algebra-submultiplicativity}（劣乗法性）任意の\(x, y \in A\)について\(\lVert xy \rVert \leq \lVert x \rVert \lVert y \rVert\)．
+    \item\label{banach-algebra-norm-1} \(\lVert 1_A \rVert = 1\)．
+\end{conditions}
+代数\(A\)とそのノルムの組\(\tuple{A, \lVert\placeholder\rVert}\)を\keyword{ノルム付き代数}(normed algebra)という．
+通常，組\(\tuple{A, \lVert \placeholder \rVert}\)を単に\(A\)と書く．
+ノルム付き代数\(A\)がそのノルムについて完備であるとき，\(A\)を\keyword{Banach代数}(Banach Algebra)と呼ぶ．
+\definitionlabel{algebra-norm}
+\end{definition}
+\end{thmbox}
+
+\footnotetext{\pronunciation{Stefan Banach (1892--1945)}{pl}{{\primarystress}stɛfan {\primarystress}banax}{ステファン・バナッハ}}
+
+\noindent 劣乗法性のような制約は付くが，大まかにいえばBanach代数は乗法が定義されたBanach空間である．
+
+\begin{example}有界な\(\symbb{C}\)の元の列全体の集合を\(X\)とする：
+\begin{align*}
+    X = \{ x \colon \PositiveInteger \to \symbb{C} \mid \text{ある\(M > 0\)が存在して，任意の\(n \in \PositiveInteger\)について\(\lvert x_n \rvert < M\)}\}
+\end{align*}
+    \(X\)の任意の元\(x = \Sequencen{x}\), \(y = \Sequencen{y}\)と任意の\(\alpha \in \symbb{C}\)について，それらの加法，スカラー倍，乗法を以下のように定義する：
+\begin{gather*}
+    x + y = (x_1 + y_1, x_2 + y_2, \ldots), \\
+    xy = (x_1 + y_1, x_2 + y_2, \ldots), \\
+    \alpha x = (\alpha x_1, \alpha x_2, \ldots).
+\end{gather*}
+加法単位元を\(0_X = (0, 0, \ldots)\)，乗法単位元を\(1_X = (1, 1, \ldots)\)とする．
+このとき\(X\)はノルム付き代数になる．\(X\)のノルムを
+\begin{align*}
+    \lVert x \rVert_\infty = \sup \{ \lvert x_n \rvert \mid n \in \PositiveInteger\}
+\end{align*}
+と定めると，数列空間\(\ell^\infty := (X, \lVert \placeholder \rVert_\infty)\)はBanach代数となる．
+証明は次の\propositionref{c-of-x-is-a-banach-algebra}とあまり変わらないため省略する．
+\end{example}
+
+\begin{thmbox}
+\begin{proposition}
+代数\(C(X)\)に一様ノルムを入れる，すなわち任意の\(f \in C(X)\)について
+\begin{align*}
+    \lVert f \rVert_\infty = \sup \{ \lvert f(x) \rvert \mid x \in X \}
+\end{align*}
+と定義する．このとき\((C(X), \lVert \placeholder \rVert_\infty)\)はBanach代数となる．
+\propositionlabel{c-of-x-is-a-banach-algebra}
+\end{proposition}
+\end{thmbox}
+
+\begin{proof} \(C(X)\)が代数であることは\propositionref{compact-hausdorff-continuous-function}で確認した．一様ノルムがベクトル空間のノルムであることの証明は省略する．一様ノルムが劣乗法性をみたすことは，任意の\(x \in X\)について
+\begin{align*}
+    f(x)g(x)
+    &\leq \lvert f(x) g(x) \vert \\
+    &\leq \lvert f(x) \rvert \lvert g(x) \vert \\
+    &\leq \lVert f \rVert_\infty \lVert g(x) \rVert_\infty
+\end{align*}
+が成り立つことからわかる．\(\lVert 1_{C(X)} \rVert = 1\)が成り立つことは明らかである．
+
+\(C(X)\)が一様ノルムについて完備であることを示す．
+\(C(X)\)上の任意のCauchy列\(\Sequencen{f}\)をとる．このとき，任意の\(\varepsilon > 0\)に対して，ある\(N_1 \in \PositiveInteger\)が存在して，\(m, n \geq N_0\)ならば
+\begin{align*}
+  \lVert f_m - f_n \rVert_\infty < \varepsilon,
+\end{align*}
+すなわち，任意の\(x \in X\)で
+\begin{align*}
+  \lvert f_m(x) - f_n(x) \rvert < \varepsilon
+\end{align*}
+が成り立つ．\(\symbb{K}\)の完備性により\((f_n(x))_{n \in \PositiveInteger}\)はある\(\alpha_x \in \symbb{K}\)に収束する．すなわち\(f(x) := \alpha_x\)とすると，\(f\colon X \to \symbb{K}\)であり，ある\(N \in \PositiveInteger\)が存在して
+\begin{align}
+  |f_N(x) - f(x)| < \frac{\varepsilon}{3}
+  \label{complete}
+\end{align}
+を満たす．\(x \in X\)は任意だったので\((f_n)_{n \in \PositiveInteger}\)は\(f\)に一様収束する．この\(f\)が連続であることを示す．\(f_N\)は連続なので，\(x\)の近傍\(V_x\)が存在し，\(y \in V_x\)ならば
+\begin{align}
+  \lvert f_N(y) - f_N(x) \rvert < \frac{\varepsilon}{3}
+  \label{continuous-fn}
+\end{align}
+が成り立つ．\((\ref{complete})\)と\((\ref{continuous-fn})\)より
+\begin{align*}
+  \lvert f(y) - f(x) \rvert
+  &= \lvert f(y) - f_N(y) + f_N(y) - f_N(x) + f_N(x) - f(x) \rvert \\
+  &\leq |f(y) - f_N(y)| + |f_N(y) - f_N(x)| + |f_N(x) - f(x)| \\
+  &< \frac{\varepsilon}{3} + \frac{\varepsilon}{3} + \frac{\varepsilon}{3} = \varepsilon.
+\end{align*}
+よって\(f\)は\(x\)で連続であり，\(x\)は任意だったので，\(f \in C(X)\)が示せた．
+\end{proof}
+
+\(X\)がコンパクトかつ\(C(X)\)の任意の元が連続関数であることから，一様ノルムというかわりに最大値ノルムといってもよい（Weierstraßの最大値定理）．
+以下では\(C(X)\)のノルムとしては一様ノルムのみを考え，\(\lVert \placeholder \rVert_\infty\)を単に\(\lVert \placeholder \rVert\)と書く．
+
+ベクトル空間においてその部分ベクトル空間というものを考えたのと同様に，
+代数においても部分代数というものを考えることができる．
+
+\begin{thmbox}
+\begin{definition}[（部分代数）]
+体\(\mathbb{K}\)上の代数\(A\)の部分集合\(S\)が\(A\)における加法，スカラー倍，乗法について閉じているとき，すなわち以下の\ref{subalgebra-closed-under-addition}--\ref{subalgebra-closed-under-multiplication}が成り立つとき，\(S\)は\(A\)の\keyword{部分代数}(subalgebra)であるという．
+\begin{conditions}
+    \item\label{subalgebra-closed-under-addition} 任意の\(x, y \in S\)で\(x + y \in S\)．
+    \item 任意の\(\alpha \in \symbb{K}\)と任意の\(x \in S\)について\(\alpha x \in S\)．
+    \item\label{subalgebra-closed-under-multiplication} 任意の\(x, y \in S\)で\(xy \in S\)．
+\end{conditions}
+\end{definition}
+\end{thmbox}
+
+\begin{example} \(X = [-1, 1]\)上の多項式関数全体の集合
+\begin{align}
+    S := \left\{
+        f\colon x \mapsto a_0 + a_1 x + \cdots + a_{n} x^{n}
+        \relmiddle{|}  a_{0}, \ldots, a_{n} \in \symbb{R}
+    \right\} \mathlabel{subalgebra-polynomial}
+\end{align}
+は\(C(X)\)の部分代数である．また偶数次の項のみからなる多項式関数の全体の集合
+\begin{align}
+    S' := \left\{f\colon x \mapsto a_0 + a_2 x^2 + \cdots + a_{2n} x^{2n} \relmiddle{|}  a_{0}, \ldots, a_{2n} \in {\Real} \right\}
+    \mathlabel{subalgebra-polynomial-even}
+\end{align}
+もまた\(C(X)\)の部分代数である．
+\end{example}
+
+\(X\)の任意の異なる2点\(\xi, \lambda\)に対して，\(f(\xi) \neq f(\lambda)\)となるような\(f \in S\)が存在するとき，\(S\)は\(X\)を\keyword{分離}するという．
+\mathref{subalgebra-polynomial}で定義された\(S\)は，\(\identity\colon x \mapsto x\)を元としてもつため，\(\identity(\xi) \neq \identity(\lambda)\)となり\(X\)を分離する．一方で\mathref{subalgebra-polynomial-even}の\(S'\)は，どのような\(f\in S'\)をとっても\(f(-1) =  f(1)\)となり\(X\)を分離することができない．
+
+\begin{thmbox}
+\begin{definition}[生成される部分代数] \(A\)を代数，\(S\)をその部分集合とする．
+このとき\(S\)を含むような最小の部分代数が存在する．これを\keyword{\(S\)の生成する部分代数}といい，
+（一般的な表記ではないがここでは）\(\alpha[S]\)と表す．
+\end{definition}
+\end{thmbox}
+
+集合\(A\)の部分集合族\(\symcal{S}\)を以下のように定義する．
+\begin{align*}
+    \symcal{S} = \{ R \mid \text{\(R\)は\(A\)の部分代数, \(S \subseteq R\)}\}.
+\end{align*}
+このとき\(A \in \symcal{S}\)より\(\symcal{S}\)空でない．このとき
+\begin{align*}
+    \alpha[S] = \bigcap \symcal{S}
+\end{align*}
+とすればよい．
+
+\begin{thmbox}
+\begin{theorem}[（Stone--Weierstraßの定理）]
+\(X\)をコンパクトHausdorff空間とする．
+\(C(X, \symbb{R})\)の単位的な閉部分代数\(S\)が\(X\)を分離するならば，
+\(S\)は\(C(X, \symbb{R})\)で稠密になる．\theoremlabel{stone-weierstrass}
+\end{theorem}
+\end{thmbox}
+
+\theoremref{stone-weierstrass}のために3つの補題を示す．
+
+\begin{thmbox}
+\begin{lemma}
+\(S\)を\(C(X)\)の部分代数とする．このとき閉包\(\overline{S}\)もまた部分代数である．
+\end{lemma}
+\end{thmbox}
+
+\begin{proof}
+任意の\(f, g \in \overline{S}\)について\(f g \in \overline{S}\)が成り立つことのみ示す．
+\(f \in \overline{S}\)より\(S\)の元の列\({(f_n)}_{n \in \PositiveInteger}\)で\(f\)に収束するものがとれる．すなわち任意の\(\varepsilon > 0\)に対して，十分大きな\(n\)をとれば，
+\(\lVert f_n - f \rVert < \inlinefrac{\varepsilon}{2( \lVert f \rVert + 1)}\)となる．
+同様に\(S\)の元の列\({(g_n)}_{n \in \PositiveInteger}\)で，十分大きな\(n\)をとれば，
+\(\lVert g_n - g \rVert < \inlinefrac{\varepsilon}{(2 \lVert g \rVert + 1)}\)となるものがとれる．
+また\(f_n \to f\)と三角不等式より，十分大きな\(n\)では\(\lVert f_n \rVert - \lVert f \rVert \leq \lVert f_n - f \rVert < 1\)となる．
+したがって
+\begin{align*}
+    \lVert f_n g_n - fg \rVert
+    &= \lVert f_n g_n - f_n g + f_n g - fg \rVert \\
+    &\leq \lVert f_n \rVert \lVert g_n - g \rVert + \lVert f_n - f \rVert \lVert g \rVert \\
+    &\leq (\lVert f \rVert + 1) \frac{\varepsilon}{2 (\Vert f \rVert + 1)} + \frac{\varepsilon}{2 \lVert g \rVert + 1} \lVert g \rVert < \varepsilon \to 0 \quad(n \to \infty)
+\end{align*}
+が成り立つ．\({(f_n g_n)}_{n \in \PositiveInteger}\)は\(S\)の元の列なので，
+その極限\(fg\)は\(\overline{S}\)の元である．
+\end{proof}
+
+\begin{thmbox}
+\begin{lemma}
+\(C(X, \symbb{K})\)の単位的な部分代数\(S\)が\(X\)を分離するならば，
+\(X\)の任意の異なる2点\(\xi, \lambda\)と任意の定数\(\alpha, \beta \in \symbb{K}\)について
+\begin{align*}
+    h_{\xi\lambda}(\xi) = \alpha,\quad h_{\xi\lambda}(\lambda) = \beta
+\end{align*}
+となるような\(h_{\xi\lambda} \in S\)が存在する．\lemmalabel{unital-subalgebra-separation}
+\end{lemma}
+\end{thmbox}
+
+\begin{proof}
+\(S\)が\(X\)を分離することから，\(X\)の異なる任意の2点\(\xi, \lambda\)に対して，\(f(\xi) \neq f(\lambda)\)となるような\(f \in S\)が存在する．このとき\(h_{\xi\lambda}\)を
+\begin{align*}
+    h_{\xi\lambda}(x) = \alpha + (\beta - \alpha) \frac{f(x) - f(\xi)}{f(\lambda) - f(\xi)}
+\end{align*}
+と定義すると，これは条件を満たす\footnote{%
+\(S\)が単位的なので\(\alpha\)，すなわち\(\alpha 1_{C(X)}(x)\)は\(S\)の元である．
+}．
+\end{proof}
+
+任意の\(f, g \in C(X)\)について\(f \lor g\), \(f \land g\)をそれぞれ
+\begin{gather*}
+    (f \lor g)(x) := \max \{ f(x), g(x) \}, \\
+    (f \land g)(x) := \min \{ f(x), g(x) \}
+\end{gather*}
+と定義する．これらについて次の補題が成り立つ．
+
+\begin{thmbox}
+\begin{lemma}
+\(X\)をコンパクトHausdorff空間，\(S\)を\(C(X)\)の閉部分代数とする．
+\(f, g \in S\)ならば\(f \lor g, f\land g \in S\)が成り立つ．\lemmalabel{closed-under-max-and-min}
+\end{lemma}
+\end{thmbox}
+
+\begin{proof} \(f \lor g, f \land g\)はそれぞれ
+\begin{gather*}
+  f \lor g = \frac{1}{2} (f + g + \lvert f - g \rvert), \\
+  f \land g = \frac{1}{2} (f + g - \lvert f - g \rvert)
+\end{gather*}
+と表すことができる\footnote{%
+\(\lvert f \rvert\)は\(\lvert f \rvert (x) = \lvert f(x) \rvert\)によって定義される関数を表す．}．
+したがって\(f \in S\)ならば\(\lvert f \rvert \in S\)が成り立つことを示せばよい．
+まず\(\lvert f \rvert\)が \(a_1 f + a_2 f^2 + \cdots + a_n f^n \in S\)で近似できることを示す．
+\(\lvert t \rvert = \sqrt{t^2}\)なので，これの多項式近似を考えたいところではあるが，\(t \mapsto \sqrt{t^2}\)は扱いが難しいため，かわりに\(t \mapsto \sqrt{1 - t}\)を考える．
+関数\(p\)を
+\begin{align*}
+  p\colon(-\infty, 1] \to \symbb{R},\quad p(t) = \sqrt{1 - t}
+\end{align*}
+と定義する．
+この関数は\((-\infty, 1)\)で微分可能で，各次の導関数は以下のようになる．
+\begin{gather*}
+    p'(t) = \frac{1}{2} (1 - t)^{\inlinefrac{-1}{2}} \cdot (-1) = -\frac{1}{2}(1 - t)^{\inlinefrac{-1}{2}}, \\
+    p''(t) = -\frac{1}{2}\cdot \left(-\frac{1}{2}\right) \cdot (1 - t)^{\inlinefrac{-3}{2}} \cdot (-1) = - \frac{1}{4}(1 - t)^{\inlinefrac{-3}{2}}, \\
+    p'''(t) = -\frac{1}{4} \cdot \left(-\frac{3}{2}\right) \cdot (1 - t)^{\inlinefrac{-5}{2}} \cdot (-1) = - \frac{3}{8} (1 - t)^{\inlinefrac{-5}{2}}, \\
+  \vdots \\
+    p^{(n)}(t) = - \frac{(2 n - 3) !! }{2^n} (1 - t)^{- \inlinefrac{(2 n - 1)}{2}} \ (n \geq 2).
+\end{gather*}
+ここで\((2n - 3)!!\)は二重階乗\((2n - 3)\cdot(2n - 5) \cdot \cdots \cdot 5 \cdot 3 \cdot 1\)である．
+Taylorの定理により任意の\(-1 < t < 1\)について\(|\theta| < t\)が存在して
+\begin{align*}
+  \sqrt{1 - t}
+  &= p(0) + p'(0) t + \frac{1}{2} p''(0) t^2 + \frac{1}{3!}p'''(0) t^3 + \cdots + \frac{1}{(n - 1)!} f^{(n - 1)} t^{n - 1} + \frac{1}{n!}f^{(n)}(\theta) t^n \\
+  &= 1 - \frac{t}{2} -\sum_{k = 2}^{n - 1} \frac{(2k - 3)!!}{k!2^k} t^{k} -
+  \frac{(2n - 3)!!}{n!2^n} \theta^n \\
+  &= \sum_{k = 0}^{n - 1} a_k t^k - a_n \theta^n
+\end{align*}
+が成り立つ．
+ここで
+\begin{align*}
+  a_0 = 1,\quad a_1 = \frac{1}{2},\quad a_n = \frac{(2n - 3)!!}{n!2^n}\quad (n \geq 2)
+\end{align*}
+とした．
+このとき
+\begin{align*}
+\left|\sqrt{1 - t} - \left(\sum_{k = 0}^{n -1} a_k t^k \right)\right|
+  &= \left| a_n \theta^k \right| \\
+  &= \frac{(2n - 3)!!}{n!2^n} \theta^n  \\
+  &< \frac{1}{2^n (2n - 4) \cdot (2n - 6) \cdot \cdots \cdot 4 \cdot 2}  \\
+  &\leq \frac{1}{2^n} \to 0 \quad(n \to \infty)
+\end{align*}
+となるから，\(\sum_{k = 1}^\infty a_k t^k\)は区間\((-1, 1)\)で\(\sqrt{1 - t}\)に一様収束する．
+\(t = 1\)のとき\(\sum_{n = 0}^\infty a_n t^n\)が収束する，すなわち\(\sum_{n = 0}^\infty a_n\)が収束することを示す．
+Ratio testを試みると
+\begin{align}
+  \left| \frac{a_{n + 1}}{a_n } \right|
+  &=  \frac{n!2^n}{(2n - 3)!!} \frac{(2n - 1)!!}{(n + 1)!2^{n + 1}} \notag \\
+  &=  \frac{2n - 1}{2(n + 1)} \notag \\
+  &=  \frac{2(n + 1) - 3}{2(n + 1)} \notag \\
+  &= 1 - \frac{3}{2(n + 1)} \to 1 \quad(n \to \infty) \mathlabel{radius}
+\end{align}
+となるため，ratio testではなくRaabeの判定法（\theoremref{raabe}）を試みる．
+\begin{align*}
+b_n
+&:= n \left(1 - \frac{|a_{n + 1}|}{|a_n|}\right) \\
+&= n \left(1 - 1 + \frac{3}{2(n + 1)}\right) \\
+&= \frac{3 n}{2(n + 1)} \\
+&= \frac{3}{\displaystyle 2\left(1 + \frac{1}{n}\right)} \to \frac{3}{2} \quad(n \to \infty).
+\end{align*}
+\(\lim_{n \to \infty} b_n > 1\)であるから，\(\sum_{n = 0}^\infty a_n\)は絶対収束する．
+したがってAbelの連続性定理（\theoremref{abel}）により
+\begin{align*}
+  \sum_{k = 0}^\infty a_k = \lim_{t \to 1 - 0}\sqrt{1 - t} = 0
+\end{align*}
+となる．
+ゆえに級数\(\sum_{k = 0}^\infty a_k t^k\)は\((-1, 1]\)，特に\([0, 1]\)で\(p\)に一様収束する．
+近似の様子を途中まで図示すると\figref{stone-weierstrass-approx-sqrt}のようになる．
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            axis equal,
+            axis lines=middle,
+            axis line style=thick,
+            xlabel={$t$},
+            ylabel={$y$},
+            ytick={1},
+            yticklabels={},
+            xtick={-1, 1},
+            domain=-1.5:2.3,
+            xmin=-1.3,
+            xmax=2,
+            ymin=-0.5,
+            ymax=2.3,
+            samples=200,
+            clip=false
+        ]
+        \addplot[sOriginalCurve, thick][domain=-1.2:0.9999] {sqrt(1 - x)};
+        \addplot[sSimpleCurve, thick, dashed][domain=-1.2:1.85] {1 - x/2};
+        \addplot[sApproxCurve, thick, dotted][domain=-1.2:1.18] {%
+            1
+            - x/2
+            - x^2 / 8
+            - 3 * x^3 / 16
+            - 5 * x^4 / 128
+            - 7 * x^5 / 256
+            - 21 * x^6 / 1024
+            - 33 * x^7 / 2048
+            - 429 * x^8 / 32768
+            - 715 * x^9 / 65536
+            - 2431 * x^10 / 262144
+            % - 4199 * x^11 / 524288
+            % - 29393 * x^12 / 4194304
+        };
+        \node (O) at (axis cs:0.15, -0.15) {$O$};
+        \node (one) at (axis cs:0.15, 1.1) {$1$};
+        \node (original) at (axis cs:-0.8, 0.8) {\textcolor{sOriginalCurve}{$\displaystyle y = \sqrt{1 - t}$}};
+        \node (line) at (axis cs:1.2, 0.95) {\textcolor{sSimpleCurve}{$\displaystyle y = 1 - \frac{t}{2}$}};
+        \node (lim) at (axis cs:1.2, -0.85) {\textcolor{sApproxCurve}{$\displaystyle y = 1 - \frac{t}{2} - \sum_{k = 2}^{10} \frac{(2k - 3)!!}{2^k k!} t^k$}};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{関数\(t \mapsto \sqrt{1 - t}\)の多項式による近似．}\figlabel{stone-weierstrass-approx-sqrt}
+\end{figure}
+
+関数\(q\colon[-1, 1] \to \mathbb{R}\)を
+\begin{align*}
+  q(t) = \sum_{n = 0}^\infty a_n (1 - t^2)^n
+\end{align*}
+で定義する．
+このとき
+\begin{align*}
+  \Bigl||t| - q(t)\Bigr|
+  &= \left| \sqrt{1 - (1 - t^2)} - \sum_{k = 0}^\infty a_k (1 - t^2)^n \right|
+\end{align*}
+となるから\(q\)は\([-1, 1]\)で\(|t|\)に一様収束する．近似の様子を途中まで図示すると\figref{stone-weierstrass-approx-abs}のようになる．
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            axis equal,
+            axis lines=middle,
+            axis line style=thick,
+            xlabel={$t$},
+            ylabel={$y$},
+            ytick={1},
+            yticklabels={$1$},
+            xtick={-1, 1},
+            xticklabels={$-1$, $1$,},
+            domain=-2.5:2.5,
+            xmin=-2.3,
+            xmax=2.3,
+            ymin=-0.07,
+            ymax=2.5,
+            samples=200,
+            clip=false
+        ]
+            \addplot[sOriginalCurve, thick][domain=-1.9:1.9] {abs(x)};
+            \addplot[sSimpleCurve, thick, dashed][domain=-1.705:1.74] {1 - (1 - x^2)/2};
+            \addplot[sApproxCurve, thick, dotted][domain=-1.701:1.701] {%
+                1
+                - (1 - x^2)/2
+                - (1 - x^2)^2 / 8
+                - 3 * (1 - x^2)^3 / 16
+                - 5 * (1 - x^2)^4 / 128
+                - 7 * (1 - x^2)^5 / 256
+                - 21 * (1 - x^2)^6 / 1024
+                - 33 * (1 - x^2)^7 / 2048
+                - 429 * (1 - x^2)^8 / 32768
+                - 715 * (1 - x^2)^9 / 65536
+                - 2431 * (1 - x^2)^10 / 262144
+                % - 4199 * (1 - x^2)^11 / 524288
+                % - 29393 * (1 - x^2)^12 / 4194304
+            };
+            \node (O) at (axis cs:0.15, -0.15) {$O$};
+            \node (original) at (axis cs:-1.8, 2.25) {%
+                \textcolor{sOriginalCurve}{$\displaystyle y = |t| = \sqrt{1 - (1 - t^2)}$}
+            };
+            \node (curve) at (axis cs:1.65, 2.5) {\textcolor{sSimpleCurve}{%
+                $\displaystyle y = 1 - \frac{1 - t^2}{2}$}
+            };
+            \node (lim) at (axis cs:1.2, -1.2) {%
+                \textcolor{sApproxCurve}{%
+                    $\displaystyle y = 1 - \frac{1 - t^2}{2} - \sum_{k = 2}^{10} \frac{(2k - 3)!!}{2^k k!} (1 - t^2)^k$
+                }
+            };
+        \end{axis}
+    \end{tikzpicture}
+    \caption{関数\(t \mapsto \lvert t \rvert\)の多項式による近似．}\figlabel{stone-weierstrass-approx-abs}
+\end{figure}
+
+級数\(\sum_{n = 0}^\infty a_n(1 - t^2)^n\)は\(t \in [-1, 1]\)で絶対収束するから，項の順番を入れ替えて足し合わせてもよい．\(\sum_{n = 0}^\infty a_n = 0\)であったから，以下のように\(q\)を書き改めることができる．
+\begin{align*}
+  p(t)
+  &= \sum_{n = 0}^\infty a_n (1 - t^2)^n \\
+  &= a_0 + a_1 (1 - t^2) + a_2(1- 2 t^2 + t^4) + a_3 (1 - 3t^2 + 3t^4 - t^6) + \cdots \\
+  &= \sum_{n = 0}^\infty a_n - (a_1 + 2 a_2 + \cdots )t^2 + (a_2 + 3 a_3 + \cdots)t^4 + \cdots \\
+  & = \lim_{n \to \infty} \sum_{n = 1}^\infty c_n t^{2n}
+\end{align*}
+ただし記号\(\displaystyle \binom{n}{k}\)は二項係数を表しており，
+\begin{align*}
+  c_n & = (-1)^n \left(\binom{n}{n} a_n + \cdots + \binom{n + j}{n} a_{n + j} + \cdots \right) \\
+      & = (-1)^n \sum_{j = 0}^\infty \left(\binom{n + j}{n} a_{n + j} \right) \\
+\end{align*}
+である．
+
+\(t \mapsto \lvert t \rvert\)を多項式近似することができたので，これで\(\lvert f \rvert\)の多項式近似を考えることができる．\(\lVert f\rVert = 0\)，すなわち\(f = 0_{C(X)}\)のときは\(|f| = f\in S\)となる．よって以下では\(\lVert f \rVert > 0\)とする．このとき
+\begin{align*}
+  \lvert f \rvert = \|f\| \frac{|f|}{\|f\|}
+\end{align*}
+が成り立つので\(f \in S\)ならば\(|f|/\|f\| \in S\)を示せばよいことがわかる．任意の\(x \in X\)に対して\(f(x)/\|f\| \in [-1, 1]\)なので
+\begin{align*}
+  \sum_{k = 1}^n c_n \left( \frac{f(x)}{\|f\|} \right)^2 \in S
+\end{align*}
+であり，これは\(n \to \infty\)とすると
+\begin{align*}
+  \left|\frac{f(x)}{\|f\|}\right|
+  = \frac{|f(x)|}{\|f\|}
+  = \frac{|f|(x)}{\|f\|}
+\end{align*}
+に一様収束する．
+\(S\)が閉集合であるから\(|f|/\|f\| \in S\)である．
+よって\(f \in S\)ならば\(|f| \in S\)であり，\(f \lor g, f \land g \in S\)となる．
+\end{proof}
+
+\begin{proof}[\theoremref{stone-weierstrass}の証明]
+任意の\(f \in C(X, \symbb{R})\)と\(\varepsilon > 0\)に対して，
+ある\(g \in S\)で
+\begin{align}
+    \lVert g - f \rVert < \varepsilon \mathlabel{stone-weierstrass-f-g}
+\end{align}
+をみたすものが存在することを示す（\propositionref{dense-paraphrase}）．
+任意の\(\xi \in X\)とる．また\(\xi\)とは異なる任意の\(\lambda \in X\)をとる．
+\lemmaref{unital-subalgebra-separation}より
+\(h_{\xi\lambda}(\xi) = f(\xi)\)かつ\(h_{\xi\lambda}(\lambda) = f(\lambda)\)となるような\(h_{\xi\lambda} \in S\)が存在する．集合\(U_\lambda\)を
+\begin{align*}
+    U_{\lambda} &:= {(h_{\xi\lambda} - f)}^{-1}(-\infty, \varepsilon) \\
+                &= \{ x \in X \mid h_{\xi\lambda}(x) - f(x) < \varepsilon \}
+\end{align*}
+と定める．
+\(U_\lambda\)は開集合\((-\varepsilon, \infty)\)の連続関数\(h_{\xi\lambda} - f\)による逆像なので開集合である．
+\(h_{\xi\lambda}(\lambda) - f(\lambda) = h_{\xi\lambda}(\xi) - f(\xi) = 0 < \varepsilon\)より\(\xi, \lambda \in U_\lambda\)である．
+よって\((U_\lambda)_{\lambda \in X \setminus \{\xi\}}\)は\(X\)の開被覆である．
+\(X\)はコンパクトなので有限個の\(U_{\lambda_1}, \ldots, U_{\lambda_n}\)によって\(X\)を覆うことができる：
+\begin{align*}
+    X \subseteq \bigcup_{i = 1}^n U_{\lambda_i}.
+\end{align*}
+\(h_\xi := h_{\xi\lambda_1} \land \cdots \land h_{\xi\lambda_n}\)とする．
+\lemmalabel{closed-under-max-and-min}より\(h_\xi \in S\)である．
+このとき
+\begin{align*}
+    V_\xi &={(h_\xi - f)}^{-1}(-\varepsilon, \infty) \\
+          &= \{ x \in X \mid h_{\xi}(x) - f(x) > - \varepsilon\}
+\end{align*}
+とすると，\((V_\xi)_{\xi \in X}\)は\(X\)の開被覆である．
+\(X\)がコンパクトなので有限個の\(V_{\xi_1}, \ldots, V_{\xi_m}\)によって\(X\)を覆うことができる：
+\begin{align*}
+    X \subseteq \bigcup_{i = 1}^m V_{\xi_i}.
+\end{align*}
+ここで\(g := h_{\xi_1} \lor \cdots \lor h_{\xi_m}\)とすると，任意の\(x \in X\)について
+\begin{align*}
+    - \varepsilon < g(x) - f(x) < \varepsilon,
+\end{align*}
+すなわち\mathref{stone-weierstrass-f-g}が成り立つ．
+したがって\(S\)は\(X\)において稠密である．
+\(S\)が閉集合であるので\(S = \overline{S} = C(X, \symbb{R})\)が成り立つ．
+\end{proof}
+
+\end{document}
