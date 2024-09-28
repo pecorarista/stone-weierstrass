@@ -32,9 +32,10 @@
 \author{宮澤 彬}
 \begin{document}
 
-\maketitle
-
 \nocite{miyajima-functional-analysis}
+\nocite{miyajima-calculus}
+
+\maketitle
 
 \begin{thmbox}
 \begin{proposition}
@@ -239,7 +240,8 @@
 \mathref{subalgebra-polynomial}で定義された\(S\)は，\(\identity\colon x \mapsto x\)を元としてもつため，\(\identity(\xi) \neq \identity(\lambda)\)となり\(X\)を分離する．一方で\mathref{subalgebra-polynomial-even}の\(S'\)は，どのような\(f\in S'\)をとっても\(f(-1) =  f(1)\)となり\(X\)を分離することができない．
 
 \begin{thmbox}
-\begin{definition}[生成される部分代数] \(A\)を代数，\(S\)をその部分集合とする．
+\begin{definition}
+\(A\)を代数，\(S\)をその部分集合とする．
 このとき\(S\)を含むような最小の部分代数が存在する．これを\keyword{\(S\)の生成する部分代数}といい，
 （一般的な表記ではないがここでは）\(\alpha[S]\)と表す．
 \end{definition}
@@ -585,5 +587,94 @@ b_n
 したがって\(S\)は\(X\)において稠密である．
 \(S\)が閉集合であるので\(S = \overline{S} = C(X, \symbb{R})\)が成り立つ．
 \end{proof}
+
+
+\appendix
+\section*{付録}
+
+\begin{thmbox}
+\begin{theorem}[（Raabe{\protect\footnotemark}の判定法）]
+正項級数\(\sum_{n = 1}^\infty a_n\)について，
+\(\lim_{n\to \infty} \inlinefrac{a_{n + 1}}{a_n} = 1\)（なのでratio testでは判別できない）かつ
+\(b_n := n(1 - \inlinefrac{a_{n + 1}}{a_n})\)の極限\(\beta := \lim_{n \to \infty} b_n\)が存在するとき，
+\(\sum_{n = 1}^\infty a_n\)は\(\beta > 1\)ならば収束し，\(\beta < 1\)ならば発散する．
+\theoremlabel{raabe}
+\end{theorem}
+\end{thmbox}
+
+\footnotetext{\pronunciation{Raabe}{de}{{\primarystress}ʁaːbə}{ラーベ}}
+
+証明略．
+
+
+\begin{thmbox}
+\begin{theorem}[（Abel{\protect\footnotemark}の連続性定理）]
+冪級数\(\sum_{n = 0}^\infty a_n x^n\)が収束半径\(1\)で関数\(f\colon (-1, 1) \to \mathbb{R}\)に収束し，\(\sum_{n = 0}^\infty a_n\)が絶対収束するならば
+\begin{align}
+  \sum_{n = 0}^\infty a^n = \lim_{x \to 1 - 0}f(x)
+\end{align}
+が成り立つ．
+\theoremlabel{abel}
+\end{theorem}
+\end{thmbox}
+
+\footnotetext{\pronunciation{Abel}{no}{\primarystress\`{ɑ}ːbəl}{アーベル}}
+
+\begin{proof}
+各\(n \in \mathbb{N}\)について\(s_n = \sum_{k = 0}^n a_k\)とし，\(s = \lim_{n \to \infty} s_n = \sum_{k = 0}^\infty a_k\)とする．
+Abelの変形により
+\begin{align*}
+    \sum_{k = 0}^n a_k x^k
+    &= \sum_{k = 0}^{0} a_k
+    + \left(\sum_{k = 0}^1 a_k - \sum_{k = 0}^{0} a_k \right) x
+    + \cdots +
+    \left(\sum_{k = 0}^n a_k - \sum_{k = 0}^{n - 1} a_k \right) x^n \\
+    &=
+    \left(\sum_{k = 0}^{0} a_k \right) (1 - x)
+    +
+    \left(\sum_{k = 0}^{1} a_k \right) (x - x^2)
+    + \cdots \\
+    &\mathrel{\hphantom{=}} \cdots +
+    \left(\sum_{k = 0}^{n - 1} a_k \right) (x^{n - 1} - x^n)
+    + \left(\sum_{k = 0}^n a_k \right) x^n \\
+    &=
+    (1 - x) \sum_{j = 0}^{n - 1} s_j x^j
+    + s_n x^n
+\end{align*}
+となるから
+\begin{align}
+  \sum_{k = 0}^n a_k x^k - s
+  &= (1 - x) \sum_{j = 0}^{n - 1} s_j x^j + s_n x^n - s (1 - x^n) - s x^n \notag \\
+  &= (1 - x) \sum_{j = 0}^{n - 1} s_j x^j - (1 - x)\frac{1 - x^n}{1 - x}s \notag \\
+  &= (1 - x) \sum_{j = 0}^{n - 1} (s_j - s) x^j \mathlabel{abel}
+\end{align}
+が成り立つ．
+
+\(x \in (-1, 1)\)において\(\sum_{k = 0}^n a_k x^k \)が\(f\)に収束するので，任意の\(\varepsilon > 0\)に対して，ある\(N \in \mathbb{N}\)が存在して，\(n \geq N\)ならば任意の\(x \in (-1, 1)\)で
+\begin{align}
+  \lvert f(x)  - \sum_{k = 0}^n a_k x^k\rvert \leq \frac{\varepsilon}{2} \mathlabel{abel2}
+\end{align}
+が成り立つ．
+\mathref{abel}，\mathref{abel2}より
+\begin{align*}
+    \lvert f(x) - s \rvert
+    &= \lvert f - \sum_{k = 0}^N a_k x^k + \sum_{k = 0}^N a_k x^k - s \rvert \\
+    &= \lvert f - \sum_{k = 0}^N a_k x^k \rvert + \lvert \sum_{k = 0}^N a_k x^k - s \rvert \\
+    &\leq \frac{\varepsilon}{2} + (1 - x) \sum_{j = 0}^{N - 1}\lvert s_j - s\rvert x^j \\
+\end{align*}
+となるから，\(x\)を十分に\(1\)に近くとる，具体的には
+\begin{align*}
+  \delta = 1 - \frac{\varepsilon}{2\sum_{k = 0}^{N - 1} \lvert s_j  - s \rvert}
+\end{align*}
+として任意の\(x \in (\delta, 1)\)をとれば\(\lvert f(x) - s \rvert\leq \varepsilon\)となる．
+よって
+\begin{align*}
+  \lim_{x \to 1 - 0}f(x) = s = \sum_{n = 0}^\infty a_k
+\end{align*}
+が成り立つ．
+\end{proof}
+
+\bibliographystyle{jecon}
+\bibliography{references}
 
 \end{document}
